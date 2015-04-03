@@ -10,30 +10,23 @@ Drifter installs the following software (see the `playbook.yml`
 for the full list):
 
 * Postgresql (version is configurable in `Vagrantfile`)
-
 * Ruby installed with
   [Ruby-Install](https://github.com/postmodern/ruby-install) (version
   is configurable in `Vagrantfile`)
-
-* [Chruby](https://github.com/postmodern/chruby))
-
+* [Chruby](https://github.com/postmodern/chruby)
 * [io.js (Node fork)](https://iojs.org/en/index.html)
-
 * [Phantomjs 2.0](http://phantomjs.org/) - either a
   [pre-built binary](https://github.com/scottjacobsen/phantomjs/releases/tag/2.0.0)
-  or compiled form source. Configurable in the `Vagrantfile`.
-
+  or compiled from source. Configurable in the `Vagrantfile`.
 * Dotfile management:
   [RCM by Thoughtbot](https://github.com/thoughtbot/rcm)
-
 * Utilities: tmux, curl, git, terminal only Emacs, zsh,
   [direnv](http://direnv.net/),
   [keychain](http://www.funtoo.org/Keychain), gnupg and gnupg-agent
 
-
 ## Installation
 
-Install Ansible Paralles, Vagrant, and the
+Install Ansible, Paralles, Vagrant, and the
 [Vagrant Parallels Provider](https://github.com/Parallels/vagrant-parallels)
 
 Parallels and Vagrant can both be installed with [Homebrew-Cask](https://github.com/caskroom/homebrew-cask)
@@ -69,7 +62,7 @@ To build Phantomjs from source (it takes a long time) change the
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/proxy_validator/fork )
+1. Fork it ( https://github.com/neighborland/drifter/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
