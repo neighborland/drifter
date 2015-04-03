@@ -1,0 +1,255 @@
+---
+- hosts: all
+  tasks:
+    - name: Fix borked sudo permissions
+      copy: src=./vagrant dest=/etc/sudoers.d/vagrant owner=root group=root mode=0440 validate='visudo -cf %s'
+      tags: parallels-fixes
+
+    - name: Update apt cache
+      apt: update_cache=yes
+      tags: update-apt-cache
+
+    - name: ensure ntpd is at the latest version
+      apt: name=ntp state=latest
+      notify:
+      - restart ntp
+      tags: ntp
+
+    - name: Install utils and libraries
+      apt: name={{item}} state=latest
+      with_items:
+        - tmux
+        - curl
+        - git
+        - emacs24-nox
+        - entr
+        - zsh
+      tags: util
+
+# RCM (dotfile manager)
+    - name: Add rcm ppa key
+      apt_key: keyserver=keyserver.ubuntu.com id=4E9A5EF6BD18E32A513B691C4609D1E5ECA538E6
+      tags: rcm
+
+    - name: Add rcm ppa
+      apt_repository: repo="deb http://ppa.launchpad.net/martin-frost/thoughtbot-rcm/ubuntu trusty main"
+      tags: rcm
+
+    - name: Install rcm
+      apt: name=rcm
+      tags: rcm
+
+# Legacy nokogiri gem
+    - name: Nokogiri prereqs
+      apt: name={{item}} state=latest
+      with_items:
+        - libxml2
+        - libxml2-dev
+        - libxslt-dev
+      tags: nokogiri
+
+# Postgresql
+    - name: Add postgres ppa key
+      apt_key: id=ACCC4CF8 url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+      tags: postgresql
+
+    - name: Add postgresql ppa
+      apt_repository: repo="deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main"
+      tags: postgresql
+
+    - name: Install postgresql
+      apt: name={{item}} state=latest
+      with_items:
+        - postgresql-{{pg_version}}
+        - libpq-dev
+        - postgresql-contrib-{{pg_version}}
+        - python-psycopg2
+      notify:
+        - restart postgresql
+      tags: postgresql
+
+    - name: Install postgresql configs
+      copy: src=./postgresql/{{item}} dest=/etc/postgresql/{{pg_version}}/main/ owner=postgres group=postgres mode=0640
+      with_items:
+        - pg_hba.conf
+        - postgresql.conf
+      notify:
+        - restart postgresql
+      tags: postgresql
+
+    - name: Add postgres vagrant role
+      sudo_user: postgres
+      postgresql_user: name=vagrant role_attr_flags="SUPERUSER"
+      tags: postgresql
+
+# Chruby and ruby
+    - name: Install chruby
+      sudo: no
+      script: ./chruby.sh creates=/usr/local/share/chruby.sh
+      tags:
+        - ruby
+
+    - name: Load chruby in all shells
+      template: src=./chruby_profile dest=/etc/profile.d/chruby.sh owner=root group=root mode=0644
+      tags: ruby
+
+    - name: Install ruby-install
+      sudo: no
+      script: ./ruby-install.sh creates=/usr/local/bin/ruby-install
+      tags: ruby
+
+    - name: Install ruby
+      sudo: no
+      command: /usr/local/bin/ruby-install -j{{ansible_processor_cores}} --no-reinstall ruby {{ruby_version}}
+      tags:
+        - ruby
+
+    - name: Update gem and bundler
+      sudo: no
+      script: ./update-gem-bundler.sh {{ruby_version}}
+      tags:
+        - ruby
+
+# IOjs (node fork)
+    - name: Add iojs ppa
+      sudo: no
+      shell: curl -sL https://deb.nodesource.com/setup_iojs_1.x | sudo bash - creates=/etc/apt/sources.list.d/nodesource.list
+      tags:
+        - iojs
+
+    - name: Install iojs
+      apt: name=iojs state=latest update_cache=yes
+      tags:
+        - iojs
+
+# Direnv
+    - name: Install direnv (git)
+      get_url:
+        url: https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64
+        dest: /usr/local/bin/direnv
+        mode: "0755"
+        owner: root
+        group: root
+      tags: direnv
+
+    - name: Direnv setup
+      sudo: no
+      lineinfile: dest=.bashrc line='eval "$(direnv hook bash)"'
+      tags: direnv
+
+# Keychain
+    - name: Install keychain
+      apt: name=keychain state=latest
+      tags: keychain
+
+    - name: Load keychain
+      sudo: no
+      lineinfile: dest=.bashrc line='eval `keychain --eval --agents gpg`'
+      tags: keychain
+
+# Gnupg
+    - name: Gpg agent
+      apt: name={{item}} state=latest
+      with_items:
+        - gnupg-agent
+        - pinentry-curses
+      tags: gpg
+
+    - name: Use pinentry-curses
+      alternatives: name=pinentry path=/usr/bin/pinentry-curses
+      tags: gpg
+
+    - name: gpg setup
+      sudo: no
+      lineinfile: dest=.bashrc line="export GPG_TTY=`tty`"
+      tags: gpg
+
+    - name: Set perms on gnupg directory
+      sudo: no
+      file: dest=.gnupg mode=0700 state=directory
+      tags: gpg
+
+    - name: Copy gpg-agent config
+      sudo: no
+      copy: src=./gpg-agent.conf dest=.gnupg/gpg-agent.conf mode=0600
+      tags: gpg
+
+#Build Phantomjs
+    - name: Phantomjs prereqs
+      apt: name={{item}} state=latest
+      with_items:
+        - build-essential
+        - g++
+        - flex
+        - bison
+        - gperf
+        - ruby
+        - perl
+        - libsqlite3-dev
+        - libfontconfig1-dev
+        - libicu-dev
+        - libfreetype6
+        - libssl-dev
+        - libpng-dev
+        - libjpeg-dev
+        - ttf-mscorefonts-installer
+      tags:
+        - build-phantomjs2
+
+    - name: Clone phantomjs repo
+      sudo: no
+      git: repo=git://github.com/ariya/phantomjs.git dest=phantomjs/
+      tags:
+        - build-phantomjs2
+
+
+    - name: Build phantomjs
+      sudo: no
+      shell: "git checkout 2.0 && ./build.sh --confirm --silent --jobs {{ansible_processor_cores}}"
+      args:
+        chdir: ~/phantomjs
+        creates: ~/phantomjs/bin/phantomjs
+      tags:
+        - build-phantomjs2
+
+    - name: Install phantomjs
+      sudo: no
+      shell: "sudo install phantomjs /usr/local/bin/"
+      args:
+        chdir: ~/phantomjs
+        creates: /usr/local/bin/phantomjs
+      tags:
+        - build-phantomjs2
+
+# Install pre-built phantom
+    - name: Download pre-built phantomjs
+      sudo: no
+      get_url: url=https://github.com/scottjacobsen/phantomjs/releases/download/2.0.0/phantomjs.xz dest=~/phantomjs.xz mode=0644
+      tags: phantomjs2
+
+    - name: Install pre-built phantomjs
+      sudo: no
+      shell: "unxz --keep phantomjs.xz && sudo install phantomjs /usr/local/bin && rm phantomjs"
+      args:
+        creates: /usr/local/bin/phantomjs
+      tags: phantomjs2
+
+    - name: Install phantom required libs
+      apt: name={{item}} state=latest
+      with_items:
+        - libsqlite3-dev
+        - libfontconfig1-dev
+        - libicu-dev
+        - libfreetype6
+        - libssl-dev
+        - libpng-dev
+        - libjpeg-dev
+        - ttf-mscorefonts-installer
+      tags: phantomjs2
+
+  handlers:
+    - name: restart ntp
+      service: name=ntp state=restarted enabled=true
+
+    - name: restart postgresql
+      service: name=postgresql state=restarted enabled=true

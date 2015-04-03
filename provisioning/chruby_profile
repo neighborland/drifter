@@ -1,0 +1,4 @@
+if [ "$USER" == "vagrant" ]; then
+  source /usr/local/share/chruby/chruby.sh
+  chruby {{ruby_version}}
+fi
