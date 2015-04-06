@@ -13,9 +13,8 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "ansible" do |p|
-    p.sudo = true
-    p.playbook = "provisioning/playbook.yml"
-    p.extra_vars = { ruby_version: "2.1.5", pg_version: "9.3" }
+    p.playbook = "playbook.yml"
+    p.extra_vars = { ruby_version: "2.1.5", pg_version: "9.3", postgis: false }
 
     # By default install a pre-built phantomjs binary. To build from
     # source change this value to "phantomjs2"
@@ -24,8 +23,8 @@ Vagrant.configure(2) do |config|
   end
 
   # Forward postgres and web server ports to the host.
-  config.vm.network "forwarded_port", guest: 5432, host: 5432
-  config.vm.network "forwarded_port", guest: 3000, host: 3000
+  # config.vm.network "forwarded_port", guest: 5432, host: 5432
+  # config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   # Sharing folders over NFS generally has the best performance.  See
   # https://docs.vagrantup.com/v2/synced-folders/nfs.html for a

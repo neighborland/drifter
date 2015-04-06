@@ -1,0 +1,10 @@
+---
+
+- name: Install keychain
+  sudo: yes
+  apt: name=keychain state=latest
+  tags: keychain
+
+- name: Load keychain
+  lineinfile: dest=.bashrc line='eval `keychain --eval --agents gpg`'
+  tags: keychain

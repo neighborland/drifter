@@ -1,0 +1,27 @@
+---
+
+- name: Gpg agent
+  sudo: yes
+  apt: name={{item}} state=latest
+  with_items:
+    - gnupg
+    - gnupg-agent
+    - pinentry-curses
+  tags: gpg
+
+- name: Use pinentry-curses
+  sudo: yes
+  alternatives: name=pinentry path=/usr/bin/pinentry-curses
+  tags: gpg
+
+- name: gpg setup
+  lineinfile: dest=.bashrc line="export GPG_TTY=`tty`"
+  tags: gpg
+
+- name: Set perms on gnupg directory
+  file: dest=.gnupg mode=0700 state=directory
+  tags: gpg
+
+- name: Copy gpg-agent config
+  copy: src=gpg-agent.conf dest=.gnupg/gpg-agent.conf mode=0600
+  tags: gpg

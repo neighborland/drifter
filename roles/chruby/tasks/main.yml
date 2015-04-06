@@ -1,0 +1,28 @@
+---
+- name: Install
+  script: chruby.sh creates=/usr/local/share/chruby.sh
+  tags:
+    - ruby
+
+- name: Load in all shells
+  sudo: yes
+  template: src=chruby_profile dest=/etc/profile.d/chruby.sh owner=root group=root mode=0644
+  tags: ruby
+
+- name: Source chruby.sh (zsh)
+  sudo: true
+  lineinfile: >
+    line='source /usr/local/share/chruby/chruby.sh'
+    dest=/etc/zsh/zshenv
+    owner=root
+    group=root
+    mode=0644
+  tags: ruby
+
+- name: Select ruby (zsh)
+  sudo: true
+  lineinfile: >
+    line='chruby {{ruby_version}}'
+    dest=/etc/zsh/zshenv
+    insertafter=EOF
+  tags: ruby

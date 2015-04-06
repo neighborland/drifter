@@ -1,4 +1,4 @@
-if [ "$USER" == "vagrant" ]; then
+if [ -n "$BASH_VERSION" ] || [ -n "$ZSH_VERSION" ]; then
   source /usr/local/share/chruby/chruby.sh
   chruby {{ruby_version}}
 fi

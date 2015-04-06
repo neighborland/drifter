@@ -1,0 +1,12 @@
+---
+
+- name: Add ppa
+  shell: curl -sL https://deb.nodesource.com/setup_iojs_1.x | sudo bash - creates=/etc/apt/sources.list.d/nodesource.list
+  tags:
+    - iojs
+
+- name: Install
+  sudo: yes
+  apt: name=iojs state=latest update_cache=yes
+  tags:
+    - iojs

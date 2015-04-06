@@ -1,0 +1,15 @@
+---
+
+- name: Install ruby-install
+  script: ruby-install.sh creates=/usr/local/bin/ruby-install
+  tags: ruby
+
+- name: Install ruby
+  command: /usr/local/bin/ruby-install -j{{ansible_processor_cores}} --no-reinstall ruby {{ruby_version}}
+  tags:
+    - ruby
+
+- name: Update gem and bundler
+  script: update-gem-bundler.sh {{ruby_version}}
+  tags:
+    - ruby

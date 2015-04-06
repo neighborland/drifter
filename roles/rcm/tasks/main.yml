@@ -1,0 +1,18 @@
+---
+
+# RCM dotfile manager
+
+- name: Add ppa key
+  sudo: yes
+  apt_key: keyserver=keyserver.ubuntu.com id=4E9A5EF6BD18E32A513B691C4609D1E5ECA538E6
+  tags: rcm
+
+- name: Add ppa
+  sudo: yes
+  apt_repository: repo="deb http://ppa.launchpad.net/martin-frost/thoughtbot-rcm/ubuntu trusty main"
+  tags: rcm
+
+- name: Install
+  sudo: yes
+  apt: name=rcm
+  tags: rcm

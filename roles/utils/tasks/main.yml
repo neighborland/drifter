@@ -1,0 +1,12 @@
+---
+- name: Install
+  sudo: yes
+  apt: name={{item}} state=latest
+  with_items:
+    - tmux
+    - curl
+    - git
+    - emacs24-nox
+    - entr
+    - zsh
+  tags: utils

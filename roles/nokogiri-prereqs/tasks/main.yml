@@ -1,0 +1,12 @@
+---
+
+# Libraries required to install legacy versions of the Nokogiri gem.
+
+- name: Install
+  sudo: yes
+  apt: name={{item}} state=latest
+  with_items:
+    - libxml2
+    - libxml2-dev
+    - libxslt-dev
+  tags: nokogiri

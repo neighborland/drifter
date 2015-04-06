@@ -1,0 +1,16 @@
+---
+- hosts: all
+  roles:
+    - parallels_fix
+    - ntp
+    - utils
+    - direnv
+    - rcm
+    - nokogiri-prereqs
+    - postgresql
+    - iojs
+    - chruby
+    - ruby
+    - gpg
+    - keychain
+    - phantomjs
