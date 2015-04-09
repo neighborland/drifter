@@ -24,7 +24,7 @@
 
 - name: Install postgis
   sudo: yes
-  apt: name=postgis state=latest
+  apt: name=postgresql-{{pg_version}}-postgis-2.1 state=latest
   when: postgis
 
 - name: Install configs
@@ -32,7 +32,7 @@
   copy: src={{item}} dest=/etc/postgresql/{{pg_version}}/main/ owner=postgres group=postgres mode=0640
   with_items:
     - pg_hba.conf
-    - postgresql.conf
+    - postgresql-{{pg_version}}.conf
   notify:
     - Restart service
   tags: postgresql
