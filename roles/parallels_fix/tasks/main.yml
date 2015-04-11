@@ -1,5 +1,0 @@
----
-- name: Fix borked sudo permissions
-  sudo: yes
-  copy: src=sudoers dest=/etc/sudoers.d/vagrant owner=root group=root mode=0440 validate='visudo -cf %s'
-  tags: parallels_fix

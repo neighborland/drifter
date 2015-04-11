@@ -1,7 +1,6 @@
 ---
 - hosts: all
   roles:
-    - parallels_fix
     - ntp
     - utils
     - direnv
