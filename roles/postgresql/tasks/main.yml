@@ -32,7 +32,7 @@
   copy: src={{item}} dest=/etc/postgresql/{{pg_version}}/main/ owner=postgres group=postgres mode=0640
   with_items:
     - pg_hba.conf
-    - postgresql-{{pg_version}}.conf
+    - "{{pg_version}}/postgresql.conf"
   notify:
     - Restart service
   tags: postgresql
