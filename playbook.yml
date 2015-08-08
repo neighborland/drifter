@@ -13,3 +13,4 @@
     - gpg
     - keychain
     - phantomjs
+    - wkhtmltopdf

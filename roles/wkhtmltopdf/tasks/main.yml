@@ -2,7 +2,7 @@
 
 - name: Fetch deb package
   get_url:
-    url=http://downloads.sourceforge.net/wkhtmltopdf/wkhtmltox-{{wkhtml_version}}_linux-{{ansible_distribution_release}}-amd64.deb
+    url=http://download.gna.org/wkhtmltopdf/{{wkhtml_base_version}}/{{wkhtml_version}}/wkhtmltox-{{wkhtml_version}}_linux-{{ansible_distribution_release}}-amd64.deb
     dest=/home/vagrant/wkhtmltox.deb
     sha256sum={{wkhtml_sha256}}
   tags: wkhtmltopdf
