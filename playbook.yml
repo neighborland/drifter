@@ -3,6 +3,7 @@
   roles:
     - ntp
     - utils
+    - cask
     - direnv
     - rcm
     - nokogiri-prereqs

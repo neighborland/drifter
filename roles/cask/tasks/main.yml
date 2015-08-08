@@ -1,0 +1,11 @@
+---
+- name: Check if installed
+  ignore_errors: yes
+  command: test -d .cask
+  register: cask_installed
+  tags: cask
+
+- name: Install emacs package manager
+  command: /bin/sh -c "curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python"
+  when: cask_installed.rc == 1
+  tags: cask
