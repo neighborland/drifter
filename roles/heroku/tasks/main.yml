@@ -1,0 +1,12 @@
+---
+
+- name: Check if installed
+  ignore_errors: yes
+  command: test -f /usr/local/heroku/bin/heroku
+  register: heroku_insalled
+  tags: heroku
+
+- name: Install heroku toolbelt
+  shell: wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+  when: heroku_insalled.rc != 0
+  tags: heroku
