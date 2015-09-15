@@ -1,0 +1,12 @@
+---
+
+- name: Add ppa
+  shell: curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash - creates=/etc/apt/sources.list.d/nodesource.list
+  tags:
+    - nodejs
+
+- name: Install
+  sudo: yes
+  apt: name=nodejs state=latest update_cache=yes
+  tags:
+    - nodejs

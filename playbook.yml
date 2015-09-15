@@ -8,7 +8,7 @@
     - rcm
     - nokogiri-prereqs
     - postgresql
-    - iojs
+    - nodejs
     - chruby
     - ruby
     - gpg
