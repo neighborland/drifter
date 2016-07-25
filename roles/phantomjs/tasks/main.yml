@@ -23,14 +23,14 @@
   tags:
     - build-phantomjs2
 
+# A fork of phantom that fixes file upload issues. Should be fixed in 2.0.1
 - name: Clone phantomjs repo
-  git: repo=git://github.com/ariya/phantomjs.git dest=phantomjs/
+  git: repo=https://github.com/stevepm/phantomjs.git dest=phantomjs/ accept_hostkey=yes
   tags:
     - build-phantomjs2
 
-
 - name: Build phantomjs
-  shell: "git checkout 2.0 && ./build.sh --confirm --silent --jobs {{ansible_processor_cores}}"
+  shell: "git checkout 5f663b8b39138c0510a7 && ./build.sh --confirm --silent --jobs {{ansible_processor_cores}}"
   args:
     chdir: ~/phantomjs
     creates: ~/phantomjs/bin/phantomjs
@@ -38,16 +38,22 @@
     - build-phantomjs2
 
 - name: Install phantomjs
-  shell: "sudo install phantomjs /usr/local/bin/"
+  shell: "sudo install ~/phantomjs/bin/phantomjs /usr/local/bin/"
   args:
-    chdir: ~/phantomjs
     creates: /usr/local/bin/phantomjs
+  tags:
+    - build-phantomjs2
+
+- name: Package phantomjs
+  shell: "cp ~/phantomjs/bin/phantomjs /vagrant && xz --stdout -9e ~/phantomjs/bin/phantomjs > /vagrant/phantomjs-{{ansible_distribution_version}}-amd64.xz"
+  args:
+    creates: /vagrant/phantomjs-{{ansible_distribution_version}}-amd64.xz
   tags:
     - build-phantomjs2
 
 # Install pre-built phantom
 - name: Download pre-built phantomjs
-  get_url: url=https://github.com/scottjacobsen/phantomjs/releases/download/2.0.0/phantomjs.xz dest=~/phantomjs.xz mode=0644
+  get_url: url=https://github.com/scottjacobsen/phantomjs/releases/download/2.0.0/phantomjs-{{ansible_distribution_version}}-amd64.xz dest=~/phantomjs.xz mode=0644
   tags: phantomjs2
 
 - name: Install pre-built phantomjs
