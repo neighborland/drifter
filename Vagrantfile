@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "ansible" do |p|
     p.playbook = "playbook.yml"
-    p.extra_vars = { ruby_version: "2.1.5", pg_version: "9.3", postgis: false }
+    p.extra_vars = { ruby_version: "2.1.5", pg_version: "9.5", postgis: false }
 
     # By default install a pre-built phantomjs binary. To build from
     # source change this value to "phantomjs2"
