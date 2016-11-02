@@ -1,7 +1,7 @@
 ---
 
 - name: Install keychain
-  sudo: yes
+  become: yes
   apt: name=keychain state=latest
   tags: keychain
 

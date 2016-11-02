@@ -1,7 +1,7 @@
 ---
 
 - name: Gpg agent
-  sudo: yes
+  become: yes
   apt: name={{item}} state=latest
   with_items:
     - gnupg
@@ -10,7 +10,7 @@
   tags: gpg
 
 - name: Use pinentry-curses
-  sudo: yes
+  become: yes
   alternatives: name=pinentry path=/usr/bin/pinentry-curses
   tags: gpg
 

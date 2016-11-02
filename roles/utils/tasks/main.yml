@@ -1,6 +1,6 @@
 ---
 - name: Install
-  sudo: yes
+  become: yes
   apt: name={{item}} state=latest
   with_items:
     - curl

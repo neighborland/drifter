@@ -1,7 +1,7 @@
 ---
 
 - name: ensure ntpd is at the latest version
-  sudo: yes
+  become: yes
   apt: name=ntp state=latest
   notify:
     - restart ntp

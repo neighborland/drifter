@@ -6,7 +6,7 @@
     - nodejs
 
 - name: Install
-  sudo: yes
+  become: yes
   apt: name=nodejs state=latest update_cache=yes
   tags:
     - nodejs

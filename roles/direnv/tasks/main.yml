@@ -1,6 +1,6 @@
 ---
 - name: Install (git)
-  sudo: yes
+  become: yes
   get_url:
     url: https://github.com/zimbatm/direnv/releases/download/v2.6.0/direnv.linux-amd64
     dest: /usr/local/bin/direnv
@@ -10,7 +10,7 @@
   tags: direnv
 
 - name: Install profile hook
-  sudo: true
+  become: true
   copy: >
     content='eval "$(direnv hook bash)"\n'
     dest=/etc/profile.d/direnv.sh
@@ -20,7 +20,7 @@
   tags: direnv
 
 - name: Install zsh profile hook
-  sudo: true
+  become: true
   lineinfile: >
     line='eval "$(direnv hook zsh)"\n'
     dest=/etc/zsh/zshrc

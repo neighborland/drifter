@@ -2,7 +2,7 @@
 
 #Build Phantomjs
 - name: Phantomjs prereqs
-  sudo: yes
+  become: yes
   apt: name={{item}} state=latest
   with_items:
     - build-essential
@@ -63,7 +63,7 @@
   tags: phantomjs2
 
 - name: Install phantom required libs
-  sudo: yes
+  become: yes
   apt: name={{item}} state=latest
   with_items:
     - libsqlite3-dev

@@ -9,5 +9,5 @@
 
 - name: install
   apt: deb=/home/vagrant/wkhtmltox.deb
-  sudo: yes
+  become: yes
   tags: wkhtmltopdf

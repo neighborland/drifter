@@ -5,12 +5,12 @@
     - ruby
 
 - name: Load in all shells
-  sudo: yes
+  become: yes
   template: src=chruby_profile dest=/etc/profile.d/chruby.sh owner=root group=root mode=0644
   tags: ruby
 
 - name: Source chruby.sh (zsh)
-  sudo: true
+  become: true
   lineinfile: >
     line='source /usr/local/share/chruby/chruby.sh'
     dest=/etc/zsh/zshenv
@@ -20,7 +20,7 @@
   tags: ruby
 
 - name: Select ruby (zsh)
-  sudo: true
+  become: true
   lineinfile: >
     line='chruby {{ruby_version}}'
     dest=/etc/zsh/zshenv
