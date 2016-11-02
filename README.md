@@ -14,7 +14,7 @@ for the full list):
   [Ruby-Install](https://github.com/postmodern/ruby-install) (version
   is configurable in `Vagrantfile`)
 * [Chruby](https://github.com/postmodern/chruby)
-* [io.js (Node fork)](https://iojs.org/en/index.html)
+* Node.js
 * [Phantomjs 2.0](http://phantomjs.org/) - either a
   [pre-built binary](https://github.com/scottjacobsen/phantomjs/releases/tag/2.0.0)
   or compiled from source. Configurable in the `Vagrantfile`.
