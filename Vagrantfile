@@ -2,12 +2,12 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "parallels/ubuntu-14.04"
+  config.vm.box = "parallels/ubuntu-16.04"
 
   config.vm.provider "parallels" do |v|
     # Change this to the name of your project.
     v.name = "drifter"
-    v.update_guest_tools = true
+    v.update_guest_tools = false
     v.memory = 1024 * 4
     v.cpus = 4
   end

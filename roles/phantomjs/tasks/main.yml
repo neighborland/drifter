@@ -52,14 +52,27 @@
     - build-phantomjs2
 
 # Install pre-built phantom
-- name: Download pre-built phantomjs
-  get_url: url=https://github.com/scottjacobsen/phantomjs/releases/download/2.0.0/phantomjs-{{ansible_distribution_version}}-amd64.xz dest=~/phantomjs.xz mode=0644
+- name: Download
+  get_url:
+    url: https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2
+    dest: /tmp/phantomjs-2.1.1-linux-i686.tar.bz2
   tags: phantomjs2
 
-- name: Install pre-built phantomjs
-  shell: "unxz --keep phantomjs.xz && sudo install phantomjs /usr/local/bin && rm phantomjs"
+- name: Uncompress
+  become: yes
+  command: tar -xf /tmp/phantomjs-2.1.1-linux-i686.tar.bz2 --strip 2 phantomjs-2.1.1-linux-i686/bin/phantomjs
   args:
+    chdir: /usr/local/bin
     creates: /usr/local/bin/phantomjs
+  tags: phantomjs2
+
+- name: Set permissions
+  become: yes
+  file:
+    group: root
+    mode: 0755
+    path: /usr/local/bin/phantomjs
+    owner: root
   tags: phantomjs2
 
 - name: Install phantom required libs

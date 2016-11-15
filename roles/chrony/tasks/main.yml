@@ -1,0 +1,20 @@
+---
+
+- name: Install
+  become: yes
+  apt:
+    name: chrony
+    state: latest
+  tags: chrony
+
+- name: Install configs
+  become: yes
+  copy:
+    src: chrony.conf
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart service
+  tags: chrony

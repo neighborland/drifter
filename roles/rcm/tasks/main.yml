@@ -9,7 +9,7 @@
 
 - name: Add ppa
   become: yes
-  apt_repository: repo="deb http://ppa.launchpad.net/martin-frost/thoughtbot-rcm/ubuntu trusty main"
+  apt_repository: repo="deb http://ppa.launchpad.net/martin-frost/thoughtbot-rcm/ubuntu xenial main"
   tags: rcm
 
 - name: Install
