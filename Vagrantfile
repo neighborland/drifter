@@ -19,7 +19,7 @@ Vagrant.configure(2) do |config|
     # By default install a pre-built phantomjs binary. To build from
     # source change this value to "phantomjs2"
     # Comma separated list:
-    p.skip_tags = %w[wkhtmltopdf heroku]
+    # p.skip_tags = %w[heroku]
   end
 
   # Forward postgres and web server ports to the host.
