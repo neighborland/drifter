@@ -15,9 +15,7 @@ for the full list):
   is configurable in `Vagrantfile`)
 * [Chruby](https://github.com/postmodern/chruby)
 * Node.js
-* [Phantomjs 2.0](http://phantomjs.org/) - either a
-  [pre-built binary](https://github.com/scottjacobsen/phantomjs/releases/tag/2.0.0)
-  or compiled from source. Configurable in the `Vagrantfile`.
+* [Phantomjs 2.1.1](http://phantomjs.org/)
 * Dotfile management:
   [RCM by Thoughtbot](https://github.com/thoughtbot/rcm)
 * Utilities: tmux, curl, git, terminal only Emacs, zsh,
