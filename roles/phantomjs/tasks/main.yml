@@ -2,13 +2,13 @@
 
 - name: Download
   get_url:
-    url: https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-i686.tar.bz2
-    dest: /tmp/phantomjs-2.1.1-linux-i686.tar.bz2
+    url: https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+    dest: /tmp/phantomjs-2.1.1-linux-x86_64.tar.bz2
   tags: phantomjs2
 
 - name: Uncompress
   become: yes
-  command: tar -xf /tmp/phantomjs-2.1.1-linux-i686.tar.bz2 --strip 2 phantomjs-2.1.1-linux-i686/bin/phantomjs
+  command: tar -xf /tmp/phantomjs-2.1.1-linux-x86_64.tar.bz2 --strip 2 phantomjs-2.1.1-linux-x86_64/bin/phantomjs
   args:
     chdir: /usr/local/bin
     creates: /usr/local/bin/phantomjs
