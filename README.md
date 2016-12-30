@@ -2,9 +2,9 @@
 
 Vagrant up a Ruby/Postgresql based development environment.
 
-Drifter Uses the Vagrant-Parallels provider, and provisions the box with Ansible.
+Drifter uses Vagrant and Virtualbox, and provisions the box with Ansible.
 
-Drifter has been tested on an Ubuntu 14.04 Vagrant box.
+Drifter has been tested on Ubuntu 16.04.
 
 Drifter installs the following software (see the `playbook.yml`
 for the full list):
@@ -24,27 +24,15 @@ for the full list):
 
 ## Installation
 
-Install Ansible, Paralles, Vagrant, and the
-[Vagrant Parallels Provider](https://github.com/Parallels/vagrant-parallels)
-
-Parallels and Vagrant can both be installed with [Homebrew-Cask](https://github.com/caskroom/homebrew-cask)
+Install Ansible, VirtualBox, and Vagrant
 
 tl;dr:
 
 ```
 brew install ansible
-brew cask install parallels-desktop
+brew cask install virtualbox
 brew cask install vagrant
-vagrant plugin install vagrant-parallels
 ```
-
-### Using other Vagrant providers
-
-Any vagrant provider should work (VirtualBox, VMWare, etc). Simply
-update the `config.vm.box` and `config.vm.provider` sections of the
-`Vagrantfile`. VMWare and Parallels are not free but they perform
-significantly better than VirtualBox - they will quickly pay for
-themselves.
 
 ## Usage
 
@@ -54,9 +42,6 @@ themselves.
 
 The Postgresql and Ruby versions are configured in the `Vagrantfile`
 in the `config.vm.provision "ansible"` block.
-
-To build Phantomjs from source (it takes a long time) change the
-`p.skip_tags` line to be like `p.skip_tags = "phantomjs2"`
 
 ## Contributing
 
