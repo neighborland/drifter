@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
     # Change this to the name of your project.
     v.name = "drifter"
     v.memory = 1024 * 8
-    v.cpus = 8
+    v.cpus = 4
     v.customize ["modifyvm", :id, "--vram", "256"]
   end
 
